@@ -62,4 +62,80 @@ describe('NFT', () => {
     })
 
   })
+
+  describe('Minting', () => {
+    let transaction, result
+
+    describe('Success', async () => {
+
+      const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10)
+
+      beforeEach(async () => {
+        const NFT = await ethers.getContractFactory('NFT')
+        nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
+
+        transaction = await nft.connect(minter).mint(1, { value: COST })
+        result = await transaction.wait()
+      })
+
+      it('returns the address of the minter', async () => {
+        expect(await nft.ownerOf(1)).to.equal(minter.address)
+      })
+
+      it('returns total number of tokens the minter owns', async () => {
+        expect(await nft.balanceOf(minter.address)).to.equal(1)
+      })
+
+      it('updates the total supply', async () => {
+        expect(await nft.totalSupply()).to.equal(1)
+      })
+
+      it('updates the contract ether balance', async () => {
+        expect(await ethers.provider.getBalance(nft.address)).to.equal(COST)
+      })
+
+      it('emits Mint event', async () => {
+        await expect(transaction).to.emit(nft, 'Mint')
+          .withArgs(1, minter.address)
+      })
+
+    })
+
+    describe('Failure', async () => {
+
+      it('rejects insufficient payment', async () => {
+        const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10)
+        const NFT = await ethers.getContractFactory('NFT')
+        nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
+
+        await expect(nft.connect(minter).mint(2, { value: COST })).to.be.reverted
+      })
+
+      it('rejects minting before time', async () => {
+        const ALLOW_MINTING_ON = new Date('May26, 2030 18:00:00').getTime().toString().slice(0, 10)
+        const NFT = await ethers.getContractFactory('NFT')
+        nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
+
+        await expect(nft.connect(minter).mint(1, { value: COST })).to.be.reverted
+      })
+
+      it('requires at least 1 NFT to be minted', async () => {
+        const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10)
+        const NFT = await ethers.getContractFactory('NFT')
+        nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
+
+        await expect(nft.connect(minter).mint(0, { value: COST })).to.be.reverted
+      })
+
+      it('does not allow more than max to be minted', async () => {
+        const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10)
+        const NFT = await ethers.getContractFactory('NFT')
+        nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
+
+        await expect(nft.connect(minter).mint(30, { value: ether(300) })).to.be.reverted
+      })
+
+    })
+
+  })
 })
