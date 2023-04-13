@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
-import { Container } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
+import Countdown from 'react-countdown'
 import { ethers } from 'ethers'
+
+import preview from '../preview.png'
 
 // Components
 import Navigation from './Navigation';
+import Data from './Data';
 import Loading from './Loading';
 
 // ABIs: Import your contract ABIs here
@@ -71,7 +75,25 @@ function App() {
         <Loading />
       ) : (
         <>
-          <p className='text-center'>Edit App.js to add your code here.</p>
+          <Row>
+            <Col>
+              <img src={preview} alt='' />
+            </Col>
+
+            <Col>
+              <div className='my-4 text-center'>
+                <Countdown date={parseInt(revealTime)} className='h2' />
+              </div>
+
+              <Data
+                maxSupply={maxSupply}
+                totalSupply={totalSupply}
+                cost={cost}
+                balance={balance}
+              />
+            </Col>
+
+          </Row>
         </>
       )}
     </Container>
