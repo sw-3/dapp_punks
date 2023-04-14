@@ -9,6 +9,7 @@ contract NFT is ERC721Enumerable, Ownable {
 
     uint256 public cost;
     uint256 public maxSupply;
+    uint256 public maxMintAmount;
     uint256 public allowMintingOn;
     string public baseURI;
     string public baseExtension = '.json';
@@ -21,11 +22,13 @@ contract NFT is ERC721Enumerable, Ownable {
         string memory _symbol,
         uint256 _cost,
         uint256 _maxSupply,
+        uint256 _maxMintAmount,
         uint256 _allowMintingOn,
         string memory _baseURI
     ) ERC721(_name, _symbol) {
         cost = _cost;
         maxSupply = _maxSupply;
+        maxMintAmount = _maxMintAmount;
         allowMintingOn = _allowMintingOn;
         baseURI = _baseURI;
     }
@@ -39,7 +42,15 @@ contract NFT is ERC721Enumerable, Ownable {
 
         // don't allow mint past max supply
         uint256 supply = totalSupply();
-        require(supply + _mintAmount <= maxSupply);
+        require(
+            supply + _mintAmount <= maxSupply,
+            'Cannot mint more than the supply.');
+
+        // an address cannot mint more than maxMintAmount
+        require(
+            _mintAmount + this.balanceOf(msg.sender) <= maxMintAmount,
+            'Cannot mint more than maximum allowed.'
+            );
 
         // require the payment
         require(msg.value >= cost * _mintAmount);
