@@ -10,6 +10,7 @@ import Navigation from './Navigation'
 import Data from './Data'
 import Mint from './Mint'
 import Loading from './Loading'
+import OwnerUI from './OwnerUI'
 
 // ABIs: Import your contract ABIs here
 import NFT_ABI from '../abis/NFT.json'
@@ -30,6 +31,8 @@ function App() {
   const [cost, setCost] = useState(0)
   const [balance, setBalance] = useState(0)
   const [whitelisted, setWhitelisted] = useState(false)
+  const [ownerAcct, setOwnerAcct] = useState(null)
+  const [isOwner, setIsOwner] = useState(false)
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -61,6 +64,12 @@ function App() {
     setBalance(await nft.balanceOf(account))
     const iswl = await nft.whitelist(account)
     setWhitelisted(iswl)
+
+    const ownerAcct = await nft.owner()
+    setOwnerAcct(ownerAcct)
+    if (account == ownerAcct) {
+      setIsOwner(true)
+    }
 
     setIsLoading(false)
   }
@@ -121,6 +130,17 @@ function App() {
             </Col>
 
           </Row>
+
+          {(isOwner) ? (
+            <OwnerUI
+              provider={provider}
+              nft={nft}
+              setIsLoading={setIsLoading}
+            />
+          ) : (
+            <p> </p>
+          )}
+
         </>
       )}
     </Container>
