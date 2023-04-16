@@ -33,6 +33,7 @@ contract NFT is ERC721Enumerable, Ownable {
         maxMintAmount = _maxMintAmount;
         allowMintingOn = _allowMintingOn;
         baseURI = _baseURI;
+        whitelist[owner()] = true;
     }
 
     function mint(uint256 _mintAmount) public payable {

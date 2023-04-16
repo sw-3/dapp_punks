@@ -73,6 +73,10 @@ describe('NFT', () => {
       expect(await nft.owner()).to.equal(deployer.address)
     })
 
+    it('adds the owner to the whitelist', async () => {
+      expect(await nft.whitelist(deployer.address)).to.equal(true)
+    })
+
   })
 
   describe('Minting', () => {

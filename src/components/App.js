@@ -57,7 +57,8 @@ function App() {
 
     // fetch balance and whitelist state of account
     setBalance(await nft.balanceOf(account))
-    setWhitelisted(await nft.whitelist(account))
+    const iswl = await nft.whitelist(account)
+    setWhitelisted(iswl)
 
     setIsLoading(false)
   }
