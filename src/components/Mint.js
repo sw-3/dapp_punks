@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import Spinner from 'react-bootstrap/Spinner'
 
-const Mint = ({ provider, nft, cost, whitelisted, setIsLoading }) => {
+const Mint = ({ provider, nft, cost, maxMintAmount, whitelisted, setIsLoading }) => {
+	const [amount, setAmount] = useState('0')
 	const [isWaiting, setIsWaiting] = useState(false)
 
 	const mintHandler = async (e) => {
@@ -14,9 +17,13 @@ const Mint = ({ provider, nft, cost, whitelisted, setIsLoading }) => {
 			if (!whitelisted) {
 				window.alert('Only whitelisted accounts can mint a Dapp Punk.')
 			}
+			else if (amount > maxMintAmount) {
+				window.alert(`Cannot mint more than ${maxMintAmount} NFTs.`)
+			}
 			else {
 				const signer = await provider.getSigner()
-				const transaction = await nft.connect(signer).mint(1, { value: cost })
+				const value = (cost * amount).toString()
+				const transaction = await nft.connect(signer).mint(amount, { value: value })
 				await transaction.wait()
 			}
 
@@ -28,17 +35,24 @@ const Mint = ({ provider, nft, cost, whitelisted, setIsLoading }) => {
 	}
 
 	return(
-		<Form onSubmit={mintHandler} style={{ maxWidth: '450px', margin: '50px auto' }}>
-			{isWaiting ? (
-					<Spinner animation='border' style={{ display: 'block', margin: '0 auto' }} />
-				) : (
+		<Form onSubmit={mintHandler} style={{ maxWidth: '300px', margin: '50px auto' }}>
+			<Form.Group as={Row}>
+				<Col>
+					<Form.Control type='number' placeholder='# to mint' onChange={(e) => setAmount(e.target.value)}/>
+				</Col>
+				<Col className='text-center'>
+					{isWaiting ? (
+							<Spinner animation='border' style={{ display: 'block', margin: '0 auto' }} />
+						) : (
 
-					<Form.Group>
-						<Button variant='primary' type='submit' style={{ width: '100%' }}>
-							Mint
-						</Button>
-					</Form.Group>
-				)}
+							// <Form.Group>
+								<Button variant='primary' type='submit' style={{ width: '100%' }}>
+									Mint
+								</Button>
+							// </Form.Group>
+						)}
+				</Col>
+			</Form.Group>
 		</Form>
 	)
 }

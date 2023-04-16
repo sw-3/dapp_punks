@@ -25,6 +25,7 @@ function App() {
 
   const [revealTime, setRevealTime] = useState(0)
   const [maxSupply, setMaxSupply] = useState(0)
+  const [maxMintAmount, setMaxMintAmount] = useState(0)
   const [totalSupply, setTotalSupply] = useState(0)
   const [cost, setCost] = useState(0)
   const [balance, setBalance] = useState(0)
@@ -53,6 +54,7 @@ function App() {
     // fetch contract data
     setMaxSupply(await nft.maxSupply())
     setTotalSupply(await nft.totalSupply())
+    setMaxMintAmount(await nft.maxMintAmount())
     setCost(await nft.cost())
 
     // fetch balance and whitelist state of account
@@ -104,6 +106,7 @@ function App() {
                 maxSupply={maxSupply}
                 totalSupply={totalSupply}
                 cost={cost}
+                maxMintAmount={maxMintAmount}
                 balance={balance}
               />
 
@@ -111,6 +114,7 @@ function App() {
                 provider={provider}
                 nft={nft}
                 cost={cost}
+                maxMintAmount={maxMintAmount}
                 whitelisted={whitelisted}
                 setIsLoading={setIsLoading}
               />
