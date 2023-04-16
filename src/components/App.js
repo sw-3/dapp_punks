@@ -28,6 +28,7 @@ function App() {
   const [totalSupply, setTotalSupply] = useState(0)
   const [cost, setCost] = useState(0)
   const [balance, setBalance] = useState(0)
+  const [whitelisted, setWhitelisted] = useState(false)
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -54,8 +55,9 @@ function App() {
     setTotalSupply(await nft.totalSupply())
     setCost(await nft.cost())
 
-    // fetch account
+    // fetch balance and whitelist state of account
     setBalance(await nft.balanceOf(account))
+    setWhitelisted(await nft.whitelist(account))
 
     setIsLoading(false)
   }
@@ -108,6 +110,7 @@ function App() {
                 provider={provider}
                 nft={nft}
                 cost={cost}
+                whitelisted={whitelisted}
                 setIsLoading={setIsLoading}
               />
             </Col>

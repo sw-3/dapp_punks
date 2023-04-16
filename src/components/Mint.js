@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
 
-const Mint = ({ provider, nft, cost, setIsLoading }) => {
+const Mint = ({ provider, nft, cost, whitelisted, setIsLoading }) => {
 	const [isWaiting, setIsWaiting] = useState(false)
 
 	const mintHandler = async (e) => {
@@ -11,9 +11,15 @@ const Mint = ({ provider, nft, cost, setIsLoading }) => {
 		setIsWaiting(true)
 
 		try {
-			const signer = await provider.getSigner()
-			const transaction = await nft.connect(signer).mint(1, { value: cost })
-			await transaction.wait()
+			if (!whitelisted) {
+				window.alert('Only whitelisted accounts can mint a Dapp Punk.')
+			}
+			else {
+				const signer = await provider.getSigner()
+				const transaction = await nft.connect(signer).mint(1, { value: cost })
+				await transaction.wait()
+			}
+
 		} catch {
 			window.alert('User rejected or transaction reverted')
 		}
