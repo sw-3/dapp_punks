@@ -30,8 +30,8 @@ function App() {
   const [totalSupply, setTotalSupply] = useState(0)
   const [cost, setCost] = useState(0)
   const [balance, setBalance] = useState(0)
+  const [tokenIds, setTokenIds] = useState(null)
   const [whitelisted, setWhitelisted] = useState(false)
-  const [ownerAcct, setOwnerAcct] = useState(null)
   const [isOwner, setIsOwner] = useState(false)
 
   const [isLoading, setIsLoading] = useState(true)
@@ -62,12 +62,11 @@ function App() {
 
     // fetch balance and whitelist state of account
     setBalance(await nft.balanceOf(account))
+    setTokenIds(await nft.walletOfOwner(account))
     const iswl = await nft.whitelist(account)
     setWhitelisted(iswl)
 
-    const ownerAcct = await nft.owner()
-    setOwnerAcct(ownerAcct)
-    if (account == ownerAcct) {
+    if ((await nft.owner()) === account) {
       setIsOwner(true)
     }
 
@@ -93,14 +92,67 @@ function App() {
           <Row>
             <Col>
               {balance > 0 ? (
-                <div className='text-center'>
-                  <img
-                    src={`https://gateway.pinata.cloud/ipfs/QmQPEMsfd1tJnqYPbnTQCjoa8vczfsV1FmqZWgRdNQ7z3g/${balance.toString()}.png`}
-                    alt= 'Open Punk'
-                    width='400px'
-                    height='400px'
-                  />
-                </div>
+                <>
+                <Row>
+                  <Col>
+                    <div className='text-center'>
+                      <img
+                        src={`https://gateway.pinata.cloud/ipfs/QmQPEMsfd1tJnqYPbnTQCjoa8vczfsV1FmqZWgRdNQ7z3g/${tokenIds[0].toString()}.png`}
+                        alt= 'Open Punk'
+                        width='200px'
+                        height='200px'
+                      />
+                    </div>
+                  </Col>
+                    {balance > 1 ? (
+                      <Col>
+                        <div className='text-center'>
+                          <img
+                            src={`https://gateway.pinata.cloud/ipfs/QmQPEMsfd1tJnqYPbnTQCjoa8vczfsV1FmqZWgRdNQ7z3g/${tokenIds[1].toString()}.png`}
+                            alt= 'Open Punk'
+                            width='200px'
+                            height='200px'
+                          />
+                        </div>
+                      </Col>
+                    ) : (
+                      <p> </p>
+                    )}
+
+                </Row>
+                <Row>
+                  {balance > 2 ? (
+                    <Col>
+                      <div className='text-center'>
+                        <img
+                          src={`https://gateway.pinata.cloud/ipfs/QmQPEMsfd1tJnqYPbnTQCjoa8vczfsV1FmqZWgRdNQ7z3g/${tokenIds[2].toString()}.png`}
+                          alt= 'Open Punk'
+                          width='200px'
+                          height='200px'
+                        />
+                      </div>
+                    </Col>
+                  ) : (
+                    <p> </p>
+                  )}
+
+                  {balance > 3 ? (
+                    <Col>
+                      <div className='text-center'>
+                        <img
+                          src={`https://gateway.pinata.cloud/ipfs/QmQPEMsfd1tJnqYPbnTQCjoa8vczfsV1FmqZWgRdNQ7z3g/${tokenIds[3].toString()}.png`}
+                          alt= 'Open Punk'
+                          width='200px'
+                          height='200px'
+                        />
+                      </div>
+                    </Col>
+                  ) : (
+                    <p> </p>
+                  )}
+
+                </Row>
+                </>
               ) : (
                 <img src={preview} alt='' />
               )}

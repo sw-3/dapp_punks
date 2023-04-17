@@ -11,7 +11,7 @@ async function main() {
   const SYMBOL = 'DP'
   const COST = ethers.utils.parseUnits('10', 'ether')
   const MAX_SUPPLY = 25
-  const MAX_MINT_AMOUNT = 3
+  const MAX_MINT_AMOUNT = 4
   const NFT_MINT_DATE = (Date.now() + 60000).toString().slice(0, 10)
   const IPFS_METADATA_URI = 'ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/'
 
