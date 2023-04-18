@@ -41,8 +41,10 @@ function App() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     setProvider(provider)
 
+    const { chainId } = await provider.getNetwork()
+
     // initiate contract
-    const nft = new ethers.Contract(config[31337].nft.address, NFT_ABI, provider)
+    const nft = new ethers.Contract(config[chainId].nft.address, NFT_ABI, provider)
     setNFT(nft)
 
     // Fetch accounts
