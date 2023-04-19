@@ -20,6 +20,7 @@ import config from '../config.json'
 
 function App() {
   const [provider, setProvider] = useState(null)
+  const [chainId, setChainId] = useState('')
   const [nft, setNFT] = useState(null)
 
   const [account, setAccount] = useState(null)
@@ -42,6 +43,8 @@ function App() {
     setProvider(provider)
 
     const { chainId } = await provider.getNetwork()
+    // console.log(`chainId = ${chainId}`)
+    setChainId(chainId)
 
     // initiate contract
     const nft = new ethers.Contract(config[chainId].nft.address, NFT_ABI, provider)
@@ -171,6 +174,7 @@ function App() {
                 cost={cost}
                 maxMintAmount={maxMintAmount}
                 balance={balance}
+                chainId={chainId}
               />
 
               <Mint

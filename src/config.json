@@ -9,9 +9,14 @@
       "address": "0x0Ac1DDFfc4213Ec7F915572d1e6E1Ce92bF4c49F"
     }
   },
+  "11155111": {
+    "nft": {
+      "address": "0xf5D9957F0DBbedaAEA9cadF99aD2b7965Fcc910A"
+    }
+  },
   "80001": {
     "nft": {
-      "address": ""
+      "address": "0x610ae367E179fb6fc1A0DEbb60336169F5742c36"
     }
   }
 }
