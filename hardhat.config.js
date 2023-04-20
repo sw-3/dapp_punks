@@ -1,4 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("@nomiclabs/hardhat-etherscan");
 require("dotenv").config();
 const privateKeys = process.env.PRIVATE_KEYS || ""
 
@@ -20,4 +21,11 @@ module.exports = {
       accounts: privateKeys.split(','),
     }
   },
+  etherscan: {
+    apiKey: {
+      goerli: "VG5IWSXRRQMHXHPYA9W4P4ICV2AG9SS42M",
+      sepolia: "VG5IWSXRRQMHXHPYA9W4P4ICV2AG9SS42M",
+      polygonMumbai: "AUWKY2G4VBVXJBA9PEWP4H27T8CQUAP2FY",
+    }
+  }
 };

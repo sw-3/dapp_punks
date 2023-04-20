@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Spinner from 'react-bootstrap/Spinner'
-import { ethers } from 'ethers'
 
 const OwnerUI = ({ provider, nft, setIsLoading }) => {
 
