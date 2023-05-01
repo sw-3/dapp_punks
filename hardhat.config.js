@@ -20,12 +20,5 @@ module.exports = {
       url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY_MUMBAI}`,
       accounts: privateKeys.split(','),
     }
-  },
-  etherscan: {
-    apiKey: {
-      goerli: "VG5IWSXRRQMHXHPYA9W4P4ICV2AG9SS42M",
-      sepolia: "VG5IWSXRRQMHXHPYA9W4P4ICV2AG9SS42M",
-      polygonMumbai: "AUWKY2G4VBVXJBA9PEWP4H27T8CQUAP2FY",
-    }
   }
 };
